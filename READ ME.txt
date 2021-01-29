@@ -1,0 +1,7 @@
+Weather Data Collector
+
+1.ChromeDriver (install it from Weather Data Collector folder)
+2. Do not close the browsers untill downloading finishes
+
+
+Data fils will be save in C:/Users/Public/Weather Data Collector in csv file format
