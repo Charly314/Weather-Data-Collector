@@ -1,14 +1,19 @@
+# This code is written by Senadhi
+
 import schedule
 import time
 from UnzipFiles import unzipfiles
 from DeleteUnwantedFiles import deleteunwantedfiles
-from main import mergefiles
+from DeleteZipfiles import deletezipfiles
+from RemoveColumn import removeColumn
 
 
 def updatefiles():
+    # downloadfiles()
     unzipfiles()
+    deletezipfiles()
     deleteunwantedfiles()
-    mergefiles()
+    removeColumn()
 
 
 # updatefiles() will run every Monday at 6.00 am

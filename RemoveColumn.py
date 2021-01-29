@@ -1,39 +1,32 @@
 # This code is written by Senadhi
-# def removeColumn():
-import glob
-import os
-import pandas as pd
-import csv
 
-# define the path to the required zip files
-path = "D:/Weather Data Collector/"
+def removeColumn():
+    import glob
+    import os
+    import pandas as pd
 
-# select all csv files and assign into filename variables
-csvfiles = glob.glob(path + "/*.csv")
+    # define the path to the required zip files
+    path = "C:/Users/Public/Weather Data Collector"
 
-Dcsvfiles= dict(zip(csvfiles, ""))
-print(Dcsvfiles)
+    # select all csv files and assign into filename variables
+    csvfiles = glob.glob(os.path.join(path, '*.csv'))
 
-for file in Dcsvfiles.key():
-    print(file)
-    with open('1160P002.csv', 'r') as files:
-        reader = csv.DictReader(files)
-
-    with open('1160P002_1.csv', 'w', newline="") as files:
-        col = ['Date and time', 'Total', 'Quality']
-        writer = csv.DictWriter(files, fieldnames=col)
-        writer.writeheader()
-
-        for line in reader:
-            del line['Comments']
-            writer.writerow(line)
-    files.close()
-
-#for file in os.listdir(path):
-    #csvfile = pd.read_csv((path+file), skiprows=3, skipfooter=2, engine='python')
-    #csvfile.drop('Comments', axis=1, inplace=True)
-    #csvfile.head()
-    #print(csvfile)
-
-
-
+    cleanfiles = []
+    filenames = os.listdir(path)
+    for filename in filenames:
+        for file in csvfiles:
+            # Assign column headers
+            colnames = ["Date & time", "Total", "Quality", "Comment"]
+            df = pd.read_csv(file, skiprows=4, skipfooter=2, header=None, engine='python')
+            df.columns = colnames
+            # Delete Comment column
+            del df['Comment']
+            # filling  missing values with 0
+            df.fillna(0)
+            # extract file name
+            filename, extention = os.path.splitext(filename)
+            # Add new column (Location) and add filename as the station code
+            df['Location'] = df.shape[0] * [filename]
+            cleanfiles.append(df)
+            masterfile = pd.concat(cleanfiles)
+            masterfile.to_csv("C:/Users/Public/Weather Data Collector/Rainfall Data.csv", index=False)
